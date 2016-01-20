@@ -7,24 +7,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="col-md-12">
-            <div class="page-header">
-                <h3>Simple multidirectionnal calendar sync</h3>
-            </div>
-            <button id="connexion" style="display:none;">Se connecter</button>
-            <button id="randomEvent" style="display:none;">Créer un évenement random</button>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="col-md-3">
-            <div id="calendars"></div>
-        </div>
-        <div class="col-md-9">
-            <div id="events"></div>
-        </div>
-    </div>
+    <div id="root"></div>
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="bundle.js"></script>
 </body>

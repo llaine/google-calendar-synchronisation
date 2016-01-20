@@ -19,11 +19,10 @@ class CalendarList extends Component {
   }
 
   render() {
-    let toggleEvents = this.props.callbacks;
-    let calendars = this.state.calendars.map(function(cal) {
-
+    const displayEventsFn = this.props.displayEvents;
+    const calendars = this.state.calendars.map(function(cal) {
       return (<Calendar
-                toggleEventsCallback={toggleEvents}
+                displayEvents={displayEventsFn}
                 key={cal.id}
                 id={cal.id}
                 description={cal.description}

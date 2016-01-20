@@ -6,10 +6,6 @@ export default class Calendar extends Component {
     super(...arguments);
   }
 
-  toggleEvents(){
-    this.props.toggleEventsCallback(this.props.id);
-  }
-
   render() {
     const divStyle = { backgroundColor: this.props.bgColor };
 
@@ -25,7 +21,7 @@ export default class Calendar extends Component {
             <div>
               {this.props.description} - {this.props.summary}
             </div>
-            <a style={hrefStyle} onClick={this.toggleEvents.bind(this)}>Afficher les évenement de ce calendrier</a>
+            <a style={hrefStyle} onClick={this.props.displayEvents.bind(null, this.props.id)}>Afficher les évenement de ce calendrier</a>
           </div>
         </div>
     )

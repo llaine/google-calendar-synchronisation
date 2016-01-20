@@ -1,14 +1,13 @@
 // Récupération des fonctions définies dans le fichier google-api.
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AppContainer from './components/AppContainer.jsx';
 
-import CalendarList from './components/calendar-list.jsx';
-import EventList from './components/event-list.jsx';
+import { onDomReady } from './dom-utils';
 
-import { authenticateUser, loadEvents, userConnected, createRandomEvent } from './google-api';
-import { $, onDomReady } from './dom-utils';
 
 // DOM ELEMENTS
+/*
 const btn_connexion = $('#connexion');
 const btn_random = $('#randomEvent');
 
@@ -33,8 +32,15 @@ btn_connexion.addEventListener('click', () => {
 btn_random.addEventListener('click', () => {
   createRandomEvent();
 });
+ */
 
-function toggleEvents(id) {
+
+onDomReady(function() {
+  ReactDOM.render(<AppContainer />, document.getElementById('root'));
+});
+
+/*
+function displayEventFromCalendar(id) {
   loadEvents(id).then(function(events) {
     ReactDOM.render(<EventList events={events} />, document.getElementById('events'));
   });
@@ -46,7 +52,7 @@ onDomReady(function() {
   userConnected()
     // L'utilisateur est connecté et tout va bien on affiche les events
     .then(function() {
-      ReactDOM.render(<CalendarList callbacks={toggleEvents} />, document.getElementById('calendars'));
+      ReactDOM.render(<CalendarList callbacks={displayEventFromCalendar} />, document.getElementById('calendars'));
       console.info('User connecté');
     })
     // L'utilisateur n'est pas connecté, on affiche le bouton de connexion.
@@ -56,7 +62,4 @@ onDomReady(function() {
       console.error(error);
     });
 });
-
-
-
-
+*/

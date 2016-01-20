@@ -12,7 +12,7 @@ export function authenticateUser(cb) {
   const params = {
     'client_id': CLIENT_ID,
     'scope': SCOPES.join(' '),
-    'immediate': true
+    'immediate': false
   };
   gapi.auth.authorize(params, cb);
 }

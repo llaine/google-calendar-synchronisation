@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import CalendarList from './calendar-list.jsx';
 import EventList from './event-list.jsx';
+import ConnexionBtn from './connexion-btn.jsx';
 
-import { loadEvents, userConnected, createRandomEvent } from '../google-api';
+import { loadEvents, userConnected, createRandomEvent, authenticateUser } from '../google-api';
 
 
 export default class AppContainer extends Component {
@@ -16,17 +17,42 @@ export default class AppContainer extends Component {
     }
   }
 
+  /**
+   * Avant que le composant se "render", on vérifie que l'utilisateur est connecté
+   */
   componentDidMount() {
     userConnected()
       .then(() => {
         this.setState({userConnected:true})
       })
       .catch((error) => {
-        console.log(error);
-        this.setState({userConnected:false})
+        if(error.error_subtype === "access_denied") {
+          this.setState({userConnected:false})
+        } else {
+          console.error(error);
+        }
       })
   }
 
+  /**
+   * Fonction qui est utilisé au moment ou l'utilisateur appuye
+   * sur le bouton de connexion.
+   */
+  onBtnClick() {
+    authenticateUser(function(authResult) {
+      if(authResult && !authResult.error) {
+        this.setState({userConnected:true});
+      } else {
+        console.error(authResult);
+        alert('Impossible de vous connecter')
+      }
+    }.bind(this))
+  }
+
+  /**
+   * Fonction qui permet d'afficher les evenements d'un calendrier.
+   * @param id
+   */
   displayEventFromCalendar(id) {
     loadEvents(id).then((events) => {
       this.setState({events: events, currentCalendar:id})
@@ -34,7 +60,6 @@ export default class AppContainer extends Component {
   }
 
   render() {
-    console.log('Render called');
     const renderMainApp = function() {
       // L'utilisateur est connecté
       if(this.state.userConnected) {
@@ -61,7 +86,7 @@ export default class AppContainer extends Component {
         // L'utilisateur n'est pas connecté, on affiche un bouton de connexion
         return (
             <div className="col-md-12">
-              <button className="btn btn-default">Connexion</button>
+              <ConnexionBtn onBtnClick={this.onBtnClick.bind(this)} />
             </div>
         )
       }

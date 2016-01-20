@@ -30,6 +30,6 @@ export function onDomReady(cb) {
 export function append(message) {
   var ul = document.getElementById('output');
   var li = document.createElement('li');
-  li.appendChild(document.createTextNode(message + '\n'));
-  ul.appendChild(li);
+  var textContent = document.createTextNode(message + '\n');
+  ul.appendChild(li.appendChild(textContent));
 }

@@ -1,7 +1,11 @@
 // Récupération des fonctions définies dans le fichier google-api.
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import CalendarList from './components/calendar-list';
+
 import { authenticateUser, loadEvents, userConnected, createRandomEvent } from './google-api';
 import { $, onDomReady } from './dom-utils';
-
 // DOM ELEMENTS
 const btn_connexion = $('#connexion');
 const btn_random = $('#randomEvent');
@@ -32,12 +36,12 @@ btn_random.addEventListener('click', () => {
 
 // Quand le DOM est ready
 onDomReady(function() {
-  // On cache le bouton de connexion au début
-  hideBtnConnexion();
   // On teste si l'utilisateur est connecté
   userConnected()
     // L'utilisateur est connecté et tout va bien on affiche les events
     .then(function() {
+      ReactDOM.render(<CalendarList />, document.getElementById('calendars'));
+
       console.info('User connecté');
       loadEvents();
     })
@@ -48,6 +52,7 @@ onDomReady(function() {
       console.error(error)
     });
 });
+
 
 
 

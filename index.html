@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Google Agenda POC</title>
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-    <h1>Simple multidirectional calendar sync for Google Agenda</h1>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h1>Simple multidirectionnal calendar sync</h1>
+            </div>
+            <button id="connexion" style="display:none;">Se connecter</button>
+            <button id="randomEvent" style="display:none;">Créer un évenement random</button>
+        </div>
+    </div>
 
-    <button id="connexion">Se connecter</button>
-    <button id="randomEvent">Créer un évenement random</button>
-
-    <ul id="output"></ul>
-
+    <div class="container-fluid">
+        <div class="col-md-3">
+            <div id="calendars"></div>
+        </div>
+        <div class="col-md-9"></div>
+    </div>
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="bundle.js"></script>
 </body>

@@ -94,3 +94,16 @@ export function createRandomEvent() {
     append('Event created: ' + event.htmlLink);
   });
 }
+
+
+export function loadCalendars() {
+  return new Promise(function (resolve, reject) {
+    gapi.client.load('calendar', 'v3', function() {
+      const request = gapi.client.calendar.calendarList.list();
+      request.execute(function(resp){
+        const calendars = resp.items;
+        resolve(calendars);
+      });
+    });
+  });
+}

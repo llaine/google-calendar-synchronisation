@@ -2,17 +2,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CalendarList from './components/calendar-list';
+import CalendarList from './components/calendar-list.jsx';
+import EventList from './components/event-list.jsx';
 
 import { authenticateUser, loadEvents, userConnected, createRandomEvent } from './google-api';
 import { $, onDomReady } from './dom-utils';
+
 // DOM ELEMENTS
 const btn_connexion = $('#connexion');
 const btn_random = $('#randomEvent');
 
 const hideBtnConnexion = () => btn_connexion.style.display = 'none';
 const showBtnConnexion = () => btn_connexion.style.display = 'block';
-
 
 // Lorsqu'on clique sur le bouton de connexion
 btn_connexion.addEventListener('click', () => {
@@ -29,10 +30,15 @@ btn_connexion.addEventListener('click', () => {
     }
   })
 });
-
 btn_random.addEventListener('click', () => {
   createRandomEvent();
 });
+
+function toggleEvents(id) {
+  loadEvents(id).then(function(events) {
+    ReactDOM.render(<EventList events={events} />, document.getElementById('events'));
+  });
+}
 
 // Quand le DOM est ready
 onDomReady(function() {
@@ -40,16 +46,14 @@ onDomReady(function() {
   userConnected()
     // L'utilisateur est connecté et tout va bien on affiche les events
     .then(function() {
-      ReactDOM.render(<CalendarList />, document.getElementById('calendars'));
-
+      ReactDOM.render(<CalendarList callbacks={toggleEvents} />, document.getElementById('calendars'));
       console.info('User connecté');
-      loadEvents();
     })
     // L'utilisateur n'est pas connecté, on affiche le bouton de connexion.
     .catch(function(error) {
       console.info('User pas connecté');
       showBtnConnexion();
-      console.error(error)
+      console.error(error);
     });
 });
 

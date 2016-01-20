@@ -34,10 +34,38 @@ export function userConnected() {
   });
 }
 
+/**
+ * Charge 10 évenements à partir d'aujourd'hui sur un calendrier
+ * @param eventId
+ * @returns {Promise}
+ */
+export function loadEvents(eventId) {
+  return new Promise(function(resolve, reject) {
+    if(!eventId) reject('eventId undefined');
+    // Toujours loader les calendrier avant
+    gapi.client.load('calendar', 'v3', function() {
+      const request = gapi.client.calendar.events.list({
+        // J'affiche les events que à partir d'aujourd'hui
+        'timeMin': (new Date()).toISOString(),
+        'calendarId': eventId,
+        'showDeleted': true,
+        'singleEvents': true,
+        // J'affiche uniquement une 10aine d'évenements, parce que sinon on s'en sort plus.
+        'maxResults': 10,
+        'orderBy': 'startTime'
+      });
+      request.execute(function(resp) {
+        const events = resp.items;
+        resolve(events);
+      });
+    });
+  });
+}
 
 /**
  * Load les events du calendar par défaut
  */
+/*
 export function loadEvents() {
   gapi.client.load('calendar', 'v3', function() {
 
@@ -65,6 +93,7 @@ export function loadEvents() {
     });
   });
 }
+*/
 
 /**
  * Ajoute un évenement random sur le calendrier par défaut
@@ -95,7 +124,10 @@ export function createRandomEvent() {
   });
 }
 
-
+/**
+ * Charge l'ensemble des calendriers du compte
+ * @returns {Promise}
+ */
 export function loadCalendars() {
   return new Promise(function (resolve, reject) {
     gapi.client.load('calendar', 'v3', function() {

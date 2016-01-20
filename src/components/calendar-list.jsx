@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { loadCalendars } from '../google-api';
 
-import Calendar from './calendar-item';
+import Calendar from './calendar-item.jsx';
 
 class CalendarList extends Component {
   constructor() {
@@ -19,10 +19,13 @@ class CalendarList extends Component {
   }
 
   render() {
+    let toggleEvents = this.props.callbacks;
     let calendars = this.state.calendars.map(function(cal) {
-      console.log(cal);
+
       return (<Calendar
+                toggleEventsCallback={toggleEvents}
                 key={cal.id}
+                id={cal.id}
                 description={cal.description}
                 summary={cal.summary}
                 accessRole={cal.accessRole}

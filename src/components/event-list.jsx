@@ -25,7 +25,7 @@ export default class EventList extends Component {
 
 
     return (
-        <ul>{eventList.length === 0 ? 'Aucun évenement pour ce calendrier' : eventList}</ul>
+        <ul className="list-group">{eventList.length === 0 ? 'Aucun évenement pour ce calendrier' : eventList}</ul>
     )
   }
 }

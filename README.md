@@ -1,6 +1,5 @@
 # POC Google-Agenda
 
-
 Synchronisation multidirectionnel de calendriers à partir d'une application web.
 
 ### Libraries used
@@ -14,3 +13,11 @@ Synchronisation multidirectionnel de calendriers à partir d'une application web
 npm install
 npm run start
 ```
+
+
+
+
+# Documentation
+
+
+##

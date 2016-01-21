@@ -1,5 +1,5 @@
 /**
- * Fonction qui va appeler un callback, une fois que le "DOM" c'est totalement
+ * Fonction qui va appeler un callback, une fois que le "DOM" s'est totalement
  * render
  * @param cb
  */

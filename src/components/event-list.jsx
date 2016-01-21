@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-
 import Event from './event-item.jsx';
+import EventForm from './event-form.jsx';
 
 export default class EventList extends Component {
   constructor() {
@@ -13,6 +13,8 @@ export default class EventList extends Component {
    * @returns {XML}
    */
   render() {
+
+    const createEventFn = this.props.createEventCallback;
     const eventList = this.props.events.map(function(event) {
       return (<Event key={event.id}
               location={event.location}
@@ -23,9 +25,11 @@ export default class EventList extends Component {
               />)
     });
 
-
     return (
-        <ul className="list-group">{eventList.length === 0 ? 'Aucun évenement pour ce calendrier' : eventList}</ul>
+        <div>
+          <EventForm createEventCallback={createEventFn} />
+          <ul className="list-group">{eventList.length === 0 ? 'Aucun évenement pour ce calendrier' : eventList}</ul>
+        </div>
     )
   }
 }

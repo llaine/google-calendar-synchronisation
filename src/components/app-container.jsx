@@ -31,14 +31,14 @@ export default class AppContainer extends Component {
         } else {
           console.error(error);
         }
-      })
+      });
   }
 
   /**
    * Fonction qui est utilisé au moment ou l'utilisateur appuye
    * sur le bouton de connexion.
    */
-  onBtnClick() {
+  onBtnConnexionClick() {
     authenticateUser(function(authResult) {
       if(authResult && !authResult.error) {
         this.setState({userConnected:true});
@@ -59,15 +59,26 @@ export default class AppContainer extends Component {
     });
   }
 
+
+  createEventInCalendar(event) {
+    event.preventDefault();
+    console.log('toto');
+  }
+
   render() {
+    /**
+     * Fonction qui va afficher + ou - moins de composannt
+     * à partir de l'état de l'application.
+     * @type {function(this:AppContainer)}
+     */
     const renderMainApp = function() {
       // L'utilisateur est connecté
       if(this.state.userConnected) {
 
-        // On vérifie qu'il a sélectionné un calendrier
+        // On vérifie que l'utilisateur connecté a sélectionné un calendrier
         let eventList = function() {
           if(this.state.currentCalendar) {
-            return (<EventList events={this.state.events} />);
+            return (<EventList createEventCallback={this.createEventInCalendar.bind(this)} events={this.state.events} />);
           }
         }.bind(this);
 
@@ -86,7 +97,7 @@ export default class AppContainer extends Component {
         // L'utilisateur n'est pas connecté, on affiche un bouton de connexion
         return (
             <div className="col-md-12">
-              <ConnexionBtn onBtnClick={this.onBtnClick.bind(this)} />
+              <ConnexionBtn onBtnClick={this.onBtnConnexionClick.bind(this)} />
             </div>
         )
       }

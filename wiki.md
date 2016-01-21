@@ -10,9 +10,16 @@ Pour toutes informations supplémentaire : louis.laine7@gmail.com
 
 ## Préambule
 
+**Question** : La question sous-jacente au POC était, "est-il possible d'avoir un synchronisation bi-directionnelle 
+entre une application et un calendrier Google".
+ 
+**Réponse** : La réponse est OUI ! L'API Google se charge de tout et on a juste besoin de manipuler le SDK
+très facilement pour pouvoir créer des évenements dans un calendrier, etc. 
+
+
 Cette petite page de wiki accompagne le POC qui méritent quelques explications sur certains aspects,
 telle que les clés d'API Google, ou la manière dont est écrit le POC. 
-
+ 
 Dans un premier temps nous verrons comment récupérer les clés d'authentification Google et pouvoir
  accéder à l'API Google. 
  
@@ -135,3 +142,208 @@ Vous pouvez trouver un exemple dans `src/google-api.js`
 
 Maintenant que vous savez comment setup un projet utilisant l'api Google, intéressons nous à la manière de 
 récupérer les informations. 
+
+
+## Preuve de Concept 
+
+### Avant propos sur le POC
+ 
+La totalité est écrit en ECMAScript 6 (ES6 ou Ecmascript2015), correspondant à la dernière spécification du langage JavaScript.
+
+Pour comprendre directement comment le code a été écrit, passez cette section et allez directement dans **Dive to the code**
+ 
+
+#### Ecmascript 6
+ 
+**Toutes les fonctionnalités qui sont utilisés ici fonctionnent très bien en version 5 du langage** et sont d'ailleurs transpilés en 
+version 5 avec Babel, mais nous reviendrons là-dessus plus tard. 
+
+Utiliser ES6 permet d'avoir une meilleure visibilité dans le code, c'est plus propre, énormément de nouvelles fonctionnalités sont incluses
+nativement comme les Promises (entre autres). 
+
+Pour approfondir le sujet et voir la myriade de nouvelles fonctionnalités : 
+
+[(Excellente) conférence sur ES6](https://www.youtube.com/watch?v=uL9uAAzkFmI)
+
+#### Babel 
+
+A l'heure actuelle, ES6 n'est pas compatible avec l'ensemble des navigateurs (la spec date de fin 2015 et tout les navigateurs
+n'ont pas encore pu se mettre à jour). 
+
+Cependant, pour utiliser ES6 dès à présent on peut utiliser un transpileur.
+
+Un transpileur prend du code source ES6 en entrée et génère du code ES5, qui peut tourner dans n’importe quel navigateur. 
+Il génère même les fichiers source map﻿, qui permettent de débugger directement le code ES6 depuis le navigateur. 
+Au moment de l’écriture de ces lignes, il y a deux outils principaux pour transpiler de l’ES6 :
+Traceur, un projet Google.
+Babeljs, un projet démarré par Sebastian McKenzie, un jeune développeur de 17 ans (oui, ça fait mal), et qui a reçu beaucoup de contributions extérieures.
+
+[Documentation officielle](https://babeljs.io/)
+
+Babel nous permet ainsi d'utiliser quasi toutes les fonctionnalités d'ES6 directement dans une runtime ES5. 
+
+L'ensemble du code front chez facebook est basé sur ES6 et Babel, donc coté stabilité ça fonctionne plutôt bien! ;-) 
+   
+#### React
+
+[Documentation officielle](http://facebook.github.io/react/index.html)
+
+Pour construire l'interface utilisateur, j'ai utilisé React plutôt que de manipuler le DOM avec jQuery. 
+
+React est une lib développé par facebook en interne faite pour créer des interfaces utilisateurs à partir de composant 
+(un peu comme les directives angular).
+ 
+React est spécialisé là-dedans et le fait très bien. Attention, ce n'est pas un framework mais une librairie. 
+
+Elle utilise quelques concepts plutôt sympa tels que, le virtual DOM ou l'immutabilité des états dans les composants permettant 
+de composer des interfaces utilisateurs beaucoup plus maintenable et simple au final.
+
+Quelques web-app qui utilisent React : Facebook (certaines parties), Instagram (en totalité), Khan Academy, ... 
+
+La compréhension du code du POC ne sera pas impacté par React qui est très simple à lire et l'ensemble des fonctionnalités concernant l'api
+google sont dans des fichiers séparés. 
+
+De plus j'ai essayé d'agrémenter le code de commentaire explicatif au maximum.
+   
+   
+#### Webpack
+
+Comme gestionnaire de build j'ai volontairement décidé de ne pas utiliser Grunt/Gulp pour plutôt utiliser webpack 
+
+(qui est juste un module bundler) pour transpiler mon code ES6 vers ES5 et gérer les dépendances coté front et tout bundler
+dans un seul fichier. 
+  
+D'autres part, j'utilise des tâches npm pour lancer le serveur de dev (cf `package.json`)
+
+[Documentation webpack](https://webpack.github.io/docs/)
+   
+### SDK JS
+
+Avant toute choses, il est nécessaire d'importer le SDK JavaScript de Google pour avoir les fonctions nous permettant de taper sur l'API. 
+
+
+```html
+<!-- index.html -->
+...
+<script src="https://apis.google.com/js/client.js"></script>
+```
+
+
+
+### Dive to the code
+
+#### Archi des composants
+
+L'application contient plusieurs composant :
+
++- AppContainer -------------------------+
+|                                        |
+| +- CalendarList -+ +- EventList +----+ |
+| | +- Calendar -+ | | +- EventForm -+ | |
+| | +- Calendar -+ | |   +- Event -+   | |
+| | +- Calendar -+ | |   +- Event -+   | |
+| | etc ..         | |   +- Event -+   | |
+| +----------------+ +-----------------+ |
++----------------------------------------+
+
+- CalendarList : Affiche la liste des Calendar
+- Calendar : Une div affichant les informations sur un calendrier
+- EventList : Affiche la liste de composant Event
+- EventForm : Un formulaire pour ajouter un évenement 
+- Event : Une div affichant un évenement d'un calendrier. 
+
+
+```bash
+
+npm install
+npm run start
+# http://localhost:8080
+
+```
+
+
+Le point d'entrée de l'application est le fichier app.js
+
+J'attend que le dom soit entirement "ready" pour render mon composant principal qui contient les composants enfants. 
+
+Je fais ça pour éviter que le composant soit affiché plus rapidement que la librairie google maps et donc provoquer des undefined
+à foison. 
+
+```javascript
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+// Mon composantn principal
+import AppContainer from './components/app-container.jsx';
+
+import { onDomReady } from './dom-utils';
+
+onDomReady(function() {
+  ReactDOM.render(<AppContainer />, document.getElementById('root'));
+});
+```
+
+
+
+##### App Container
+
+C'est le composant principal puisqu'il contient deux sous composants majeurs ainsi que l'état général de l'application. 
+ 
+La méthode **render** est celle qui va afficher le HTML, je vérifie que l'utilisateur soit connecté pour 
+lui afficher les informations, sinon on lui affiche un bouton de connexion. 
+
+
+
+### Google Api 
+
+[La documentation](https://developers.google.com/google-apps/calendar/overview)
+
+Il est nécessaire d'être authentifié pour accéder aux informations utilisateurs.
+ 
+ 
+#### Afficher les calendriers d'un utilisateur 
+
+```javascript
+
+// toujours bien "loader" les calendriers avant, sinon on ne pourra pas faire de request
+gapi.client.load('calendar', 'v3', function() {
+  const request = gapi.client.calendar.calendarList.list();
+  request.execute(function(resp){
+    // La liste des calendriers 
+    const calendars = resp.items;
+  });
+});
+
+```
+
+
+#### Afficher les évenements d'un calendrier
+
+[La documentation](https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list)
+
+```javascript
+
+gapi.client.load('calendar', 'v3', function() {
+  // Les informations qu'on veut avoir, il peut y en avoir + ou moins. 
+  const request = gapi.client.calendar.events.list({
+    // J'affiche les events que à partir d'aujourd'hui
+    'timeMin': (new Date()).toISOString(),
+    // L'id du calendrier qu'on veut afficher. Par défaut on peut choisir le calendrier 'primary' correspondant à celui par défaut
+    'calendarId': 'xxxxxx',
+    'showDeleted': false,
+    'singleEvents': true,
+    // J'affiche uniquement une 10aine d'évenements, parce que sinon on s'en sort plus.
+    'maxResults': 10,
+    'orderBy': 'startTime'
+  });
+  request.execute(function(resp) {
+    // La liste des évenements
+    const events = resp.items;
+  });
+});
+
+```
+
+
+
+

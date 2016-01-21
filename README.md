@@ -2,22 +2,17 @@
 
 Synchronisation multidirectionnel de calendriers à partir d'une application web.
 
-### Libraries used
+### Libraries
 
-- Google Agenda JS
-- Ecmascript 6
+- Google JS SDK
+- React
 
-## Installation
+## How to
 
 ```
 npm install
 npm run start
+# Browser localhost:8080
 ```
 
-
-
-
-# Documentation
-
-
-##
+Toute la documentation est à voir sur le fichier **wiki.md**

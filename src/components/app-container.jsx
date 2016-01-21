@@ -59,17 +59,20 @@ export default class AppContainer extends Component {
     });
   }
 
+  updateEvents(newEvent) {
+    const currentEvents = this.state.events;
+    currentEvents.push(newEvent);
+    this.setState({events:currentEvents});
+  }
 
   createEventInCalendar(eventAttributes) {
     createRandomEvent(eventAttributes, this.state.currentCalendar).then((eventCreated) => {
-      const currentEvents = this.state.events;
+      this.updateEvents(eventCreated)
 
-      currentEvents.push(eventCreated);
-
-      this.setState({events:currentEvents});
-
-      console.log(this.state.events);
-    });
+    }).catch((eventCreated) => {
+      // FIXME, la promise plante à tout les coups, alors que le calendrier est bien ajouté.
+      this.updateEvents(eventCreated)
+    })
   }
 
   render() {

@@ -17,6 +17,17 @@ export default class EventForm extends Component {
     }
   }
 
+
+  resetState() {
+    this.setState({
+      description: null,
+      summary: null,
+      localisation: null,
+      startDateTime : null,
+      endDateTime : null
+    })
+  }
+
   /**
    * Mets à jour l'objet state
    * Le nom correspond à la propriété dans le state
@@ -35,7 +46,10 @@ export default class EventForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.props.createEventCallback(this.state);
+    // Reset le form
     e.target.reset();
+    // Reset l'état attaché au formulaire
+    this.resetState();
   }
 
   render() {

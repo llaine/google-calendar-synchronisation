@@ -60,9 +60,16 @@ export default class AppContainer extends Component {
   }
 
 
-  createEventInCalendar(event) {
-    event.preventDefault();
-    console.log('toto');
+  createEventInCalendar(eventAttributes) {
+    createRandomEvent(eventAttributes, this.state.currentCalendar).then((eventCreated) => {
+      const currentEvents = this.state.events;
+
+      currentEvents.push(eventCreated);
+
+      this.setState({events:currentEvents});
+
+      console.log(this.state.events);
+    });
   }
 
   render() {

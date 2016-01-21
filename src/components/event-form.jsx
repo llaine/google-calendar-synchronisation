@@ -1,47 +1,65 @@
 import React, { Component } from 'react';
 
+import Moment from 'moment';
+
 export default class EventForm extends Component {
   constructor() {
-    super(...arguments)
+    super(...arguments);
+
+    const CALENDAR_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ';
+
     this.state = {
-      newEvent: {
-        description: "",
-        summary:"",
-        localisation: "",
-        start: {
-          dateTime : new Date()
-        }
-      }
+      description: "",
+      summary:"",
+      localisation: "",
+      startDateTime : new Moment().format(CALENDAR_FORMAT),
+      endDateTime : new Moment().add(1, 'days').format(CALENDAR_FORMAT)
     }
   }
 
+  /**
+   * Mets à jour l'objet state
+   * Le nom correspond à la propriété dans le state
+   * @param name
+   */
   onChange(name) {
     const value = arguments[1].target.value;
+    this.setState({[name]:value});
+  }
 
+  /**
+   * Au submit du formulaire,
+   * on évite qu'il se valide et on appelle le callback de création d'event.
+   * @param e
+   */
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.createEventCallback(this.state);
+    e.target.reset();
   }
 
   render() {
     return (
         <div className="jumbotron">
           <p>Créer un évenement sur ce calendrier</p>
-          <form onSubmit={this.props.createEventCallback.bind(event)} className="form-inline" noValidate>
+          <form onSubmit={this.onSubmit.bind(this)} className="form-inline" noValidate>
             <div className="form-group">
               <input type="text"
-                     onKeyPress={this.onChange.bind(this, 'summary')}
+                     onKeyUp={this.onChange.bind(this, 'summary')}
                      className="form-control"
                      id="nom"
                      placeholder="Nom" />
             </div>
             <div className="form-group">
               <input type="text"
-                     onKeyPress={this.onChange.bind(this, 'description')}
+                     onKeyUp={this.onChange.bind(this, 'description')}
                      className="form-control"
                      id="description"
                      placeholder="Description" />
             </div>
             <div className="form-group">
               <input type="text"
-                     onKeyPress={this.onChange.bind(this, 'localisation')}
+                     onKeyUp={this.onChange.bind(this, 'localisation')}
                      className="form-control"
                      id="localisation"
                      placeholder="Localisation" />

@@ -97,29 +97,35 @@ export function loadEvents() {
 /**
  * Ajoute un évenement random sur le calendrier par défaut
  */
-export function createRandomEvent() {
-  const random = Math.random();
+export function createRandomEvent(eventAttributes, calendarId) {
+  return new Promise(function(reject, resolve) {
 
-  var event = {
-    'summary': `Event N° ${random}`,
-    'location': '800 Howard St., San Francisco, CA 94103',
-    'description': 'Je suis un évenement aléatoire crée depuis une appli web!.',
-    'start': {
-      'dateTime': '2016-01-25T09:00:00-07:00',
-      'timeZone': 'America/Los_Angeles'
-    },
-    'end': {
-      'dateTime': '2016-01-25T17:00:00-07:00',
-      'timeZone': 'America/Los_Angeles'
-    }
-  };
-  var request = gapi.client.calendar.events.insert({
-    'calendarId': 'primary',
-    'resource': event
-  });
+    const random = Math.random();
 
-  request.execute(function(event) {
-    append('Event created: ' + event.htmlLink);
+    var event = {
+      'summary': !eventAttributes.summary ?
+          `Event N° ${random}` : eventAttributes.summary,
+      'location': !eventAttributes.localisation ?
+          '800 Howard St., San Francisco, CA 94103' : eventAttributes.localisation,
+      'description': !eventAttributes.description ?
+          'Je suis un évenement aléatoire crée depuis une appli web!.' : eventAttributes.description,
+      'start': {
+        'dateTime': !eventAttributes.startDateTime ?
+            '2016-01-25T09:00:00-07:00' : eventAttributes.startDateTime
+      },
+      'end': {
+        'dateTime': !eventAttributes.endDateTime ?
+            '2016-01-25T17:00:00-07:00' : eventAttributes.endDateTime
+      }
+    };
+    var request = gapi.client.calendar.events.insert({
+      'calendarId': !calendarId ? 'primary' : calendarId,
+      'resource': event
+    });
+
+    request.execute(function(event) {
+      resolve(event);
+    });
   });
 }
 

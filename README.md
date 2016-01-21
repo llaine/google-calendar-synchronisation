@@ -8,10 +8,7 @@ Synchronisation multidirectionnel de calendriers à partir d'une application web
 - Google Agenda JS
 - Ecmascript 6
 
-
-
 ## Installation
-
 
 ```
 npm install

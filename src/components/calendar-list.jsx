@@ -7,11 +7,16 @@ import Calendar from './calendar-item.jsx';
 class CalendarList extends Component {
   constructor() {
     super();
+    // Ce composant contient un tableau de calendrier
     this.state = {
       calendars: []
     }
   }
 
+  /**
+   * Avant que le composant se render, on récupère les composantns
+   * puis on les assigne dans l'état définit dans le constructeur.
+   */
   componentDidMount() {
     loadCalendars().then((calendars) => {
       this.setState({calendars:calendars});
@@ -20,6 +25,7 @@ class CalendarList extends Component {
 
   render() {
     const displayEventsFn = this.props.displayEvents;
+    // On boucle sur les calendriers dans l'état
     const calendars = this.state.calendars.map(function(cal) {
       return (<Calendar
                 displayEvents={displayEventsFn}
@@ -32,9 +38,8 @@ class CalendarList extends Component {
               />)
     });
 
-    return (
-        <div id="calendarList">{calendars}</div>
-    )
+    // On affiche la liste des composannts Calendrier.
+    return (<div id="calendarList">{calendars}</div>)
   }
 }
 

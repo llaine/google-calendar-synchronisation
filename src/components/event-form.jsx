@@ -45,6 +45,7 @@ export default class EventForm extends Component {
    */
   onSubmit(e) {
     e.preventDefault();
+    // On appelle la fonction déclaré dans le app-container qui nous était passé en tant que propriété.
     this.props.createEventCallback(this.state);
     // Reset le form
     e.target.reset();

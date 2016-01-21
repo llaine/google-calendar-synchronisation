@@ -31,8 +31,6 @@ Dans un second temps, nous verrons comment le POC a été écrit et quelles mét
 Tout le code qui va être montré dans cette page de wiki est situé dans le dossier `src/` du projet.  
 
 
-
-
 # Première partie 
 
 ## Créer des identifiants pour l'api Google
@@ -303,6 +301,9 @@ Il est nécessaire d'être authentifié pour accéder aux informations utilisate
  
 #### Afficher les calendriers d'un utilisateur 
 
+
+Cette fonctionnalité est prisé en charge par le composant **calendar-list.jsx** 
+
 ```javascript
 
 // toujours bien "loader" les calendriers avant, sinon on ne pourra pas faire de request
@@ -320,6 +321,12 @@ gapi.client.load('calendar', 'v3', function() {
 #### Afficher les évenements d'un calendrier
 
 [La documentation](https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list)
+
+Cette fonctionnalité est prise en charge par le composant app-container.
+
+En effet celui-ci garde dans son état interne le calendrier qui a été sélectionné ainsi que 
+
+ses évenements associés.
 
 ```javascript
 
@@ -342,6 +349,36 @@ gapi.client.load('calendar', 'v3', function() {
   });
 });
 
+```
+
+
+
+#### Créer un évenement 
+
+
+Cette fonctionnalité est associé au composantn app-container, dans la fonction **createEventInCalendar**
+
+
+```javascript
+
+var request = gapi.client.calendar.events.insert({
+    'calendarId': 'xxxx', // Ou primary par défaut
+    'resource': {
+        summary: 'Foo',
+        location: 'Bar',
+        description: 'FooBar',
+        start: {
+            date: new Date()
+        },
+        end: {
+            date: // Deux jours plus tard par exemple  
+        }
+    }
+});
+
+request.execute(function(result) {
+    // Yay, mon event est crée ...
+});
 ```
 
 

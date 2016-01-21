@@ -6,6 +6,13 @@ export default class Calendar extends Component {
     super(...arguments);
   }
 
+  /**
+   * Va renvoyer une calendrier tout simple.
+   * On va pouvoir afficher les évenements du calendrier en utilisant
+   * la fonction de callback displayEvents, qui est passé comme propriété au composant.
+   * Cette méthode est définie dans le app-container.jsx
+   * @returns {XML}
+   */
   render() {
     const divStyle = { backgroundColor: this.props.bgColor };
 

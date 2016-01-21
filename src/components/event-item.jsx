@@ -8,6 +8,7 @@ export default class Event extends Component {
   }
 
   render() {
+    // Formattage de la date
     var date;
     if(this.props.startDate.dateTime) {
       date = new Moment(this.props.startDate.dateTime).fromNow()

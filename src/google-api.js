@@ -64,7 +64,7 @@ export function loadEvents(eventId) {
 /**
  * Ajoute un évenement random sur le calendrier par défaut
  */
-export function createRandomEvent(eventAttributes, calendarId) {
+export function createEventForCalendar(eventAttributes, calendarId) {
   const random = Math.random();
   const event = {
     'summary': !eventAttributes.summary ?

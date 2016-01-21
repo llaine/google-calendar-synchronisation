@@ -4,12 +4,14 @@ import CalendarList from './calendar-list.jsx';
 import EventList from './event-list.jsx';
 import ConnexionBtn from './connexion-btn.jsx';
 
-import { loadEvents, userConnected, createRandomEvent, authenticateUser } from '../google-api';
+import { loadEvents, userConnected, createEventForCalendar, authenticateUser } from '../google-api';
 
 
 export default class AppContainer extends Component {
   constructor() {
     super(...arguments);
+    // Ce composantn dispose du calendrier courant (celui qui a été cliqué par l'utilsiateur)
+    // Ainsi que la liste des évenements associé à ce calendrier.
     this.state = {
       events:[],
       currentCalendar: null,
@@ -59,22 +61,38 @@ export default class AppContainer extends Component {
     });
   }
 
+  /**
+   * Mets à jour la liste d'évenement affiché sur la page.
+   * Attention la méthode setState fait re-appel à la méthode render() du composant
+   * @param newEvent
+   */
   updateEvents(newEvent) {
     const currentEvents = this.state.events;
     currentEvents.push(newEvent);
     this.setState({events:currentEvents});
   }
 
+  /**
+   * Fonction permettant de créer un évenement via l'api Google.
+   * Puis de réafficher la liste des composants.
+   * Cette fonction est passé en attribut aux composants enfants (en particulier EventList -> EventForm).
+   * @param eventAttributes
+   */
   createEventInCalendar(eventAttributes) {
-    createRandomEvent(eventAttributes, this.state.currentCalendar).then((eventCreated) => {
+    createEventForCalendar(eventAttributes, this.state.currentCalendar).then((eventCreated) => {
       this.updateEvents(eventCreated)
 
     }).catch((eventCreated) => {
       // FIXME, la promise plante à tout les coups, alors que le calendrier est bien ajouté.
+      // Cette behaviour provient de la Promise (je pense).
       this.updateEvents(eventCreated)
     })
   }
 
+  /**
+   * Fonction appelé pour afficher le HTML correspondant au composant
+   * @returns {XML}
+   */
   render() {
     /**
      * Fonction qui va afficher + ou - moins de composannt
@@ -88,11 +106,15 @@ export default class AppContainer extends Component {
         // On vérifie que l'utilisateur connecté a sélectionné un calendrier
         let eventList = function() {
           if(this.state.currentCalendar) {
+            // On passe la fonction de création d'évent au composant
+            // enfant, pour que celui-ci n'est pas à se charger de faire l'appel à l'API, etc.
             return (<EventList createEventCallback={this.createEventInCalendar.bind(this)} events={this.state.events} />);
           }
         }.bind(this);
 
         // On affiche la liste des calendriers avec les events (si selectionné)
+        // Encore une fois, on passe la fonction pour afficher les évenements au composant enfant,
+        // pour que le composant enfant n'est pas besoin de se charger d'afficher les events du calendrier.
         return (
             <div>
               <div className="col-md-3">

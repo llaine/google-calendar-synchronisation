@@ -30,6 +30,11 @@ Dans un second temps, nous verrons comment le POC a été écrit et quelles mét
 
 Tout le code qui va être montré dans cette page de wiki est situé dans le dossier `src/` du projet.  
 
+Ce projet est réalisé simplement avec des composants, si vous voulez savoir comment utiliser redux pour manipuler
+les états de ces composants, j'ai réecrit le même projet en utilisant redux
+
+[Le dépot ici](https://github.com/llaine/redux-poc)
+
 
 # Première partie 
 
@@ -234,6 +239,7 @@ Avant toute choses, il est nécessaire d'importer le SDK JavaScript de Google po
 
 L'application contient plusieurs composant :
 
+```
 +- AppContainer -------------------------+
 |                                        |
 | +- CalendarList -+ +- EventList +----+ |
@@ -243,6 +249,8 @@ L'application contient plusieurs composant :
 | | etc ..         | |   +- Event -+   | |
 | +----------------+ +-----------------+ |
 +----------------------------------------+
+```
+
 
 - CalendarList : Affiche la liste des Calendar
 - Calendar : Une div affichant les informations sur un calendrier

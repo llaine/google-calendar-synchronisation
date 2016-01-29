@@ -10,15 +10,15 @@ Pour toutes informations supplémentaire : louis.laine7@gmail.com
 
 ## Préambule
 
-**Question** : La question sous-jacente au POC était, "est-il possible d'avoir un synchronisation bi-directionnelle 
+**Question** : La question sous-jacente au POC était, "est-il possible d'avoir une synchronisation bi-directionnelle 
 entre une application et un calendrier Google".
  
 **Réponse** : La réponse est OUI ! L'API Google se charge de tout et on a juste besoin de manipuler le SDK
 très facilement pour pouvoir créer des évenements dans un calendrier, etc. 
 
 
-Cette petite page de wiki accompagne le POC qui méritent quelques explications sur certains aspects,
-telle que les clés d'API Google, ou la manière dont est écrit le POC. 
+Cette petite page de wiki accompagne le POC qui mérite quelques explications sur certains aspects,
+tels que les clés d'API Google, ou la manière dont est écrit le POC. 
  
 Dans un premier temps nous verrons comment récupérer les clés d'authentification Google et pouvoir
  accéder à l'API Google. 
@@ -42,7 +42,7 @@ les états de ces composants, j'ai réecrit le même projet en utilisant redux
 
 Chaque application qui utilise des données provenant de Google (maps, calendar, youtube, etc) doit obligatoirement
 fournir une clé d'API. 
-On peut créer plusieurs type de clé différentes, mais pour nos besoins (une application web), 
+On peut créer plusieurs type de clés différentes, mais pour nos besoins (une application web), 
 seule une clé oauth sera nécessaire. 
 
 
@@ -62,14 +62,14 @@ Cliquer sur **Nouveaux identifiants** puis sur **Id client OAuth**
 
 ![gdc_oauth_new][gdc_oauth_new]
 
-Une page s'ouvre, nous demandant quel type d'application sera destiné cette clé, nous cliquons sur  
+Une page s'ouvre, nous demandant a quel type d'application sera destinée cette clé, nous cliquons sur  
 **Application Web** et un formulaire s'affiche, qu'il sera nécessaire de remplir. 
 
 Il est très important de ne pas oublier de remplir le champ correspondant aux **Origines Javascript autorisés**. 
  
 Il est utilisé pour les requêtes effectuées depuis un navigateur. Il s'agit de l'URI d'origine de l'applicable cliente. 
 
-Une mauvaise configuration de ce champ pourra entrainé des erreurs de CORS domain.
+Une mauvaise configuration de ce champ pourra entrainer des erreurs de CORS domain.
  
 
 ![gdc_oauth_form][gdc_oauth_form]
@@ -79,7 +79,7 @@ En cliquant sur **Créer**, une popup s'ouvre avec les identifiants associés.
 
 Notez les bien, ils vous serviront dans votre application. 
 
-(Ne vous inquietez pas si vous avez omit de les noter, vous pouvez les retrouver sur le panneau d'administration).
+(Ne vous inquietez pas si vous avez omis de les noter, vous pouvez les retrouver sur le panneau d'administration).
  
 ![gdc_oauth_form_ok][gdc_oauth_form_ok]
 
@@ -88,8 +88,8 @@ Notez les bien, ils vous serviront dans votre application.
 #### Ecran d'autorisation OAuth
  
 
-Pour que vous puissiez utiliser votre clé, Google vous demandera des informations concernant certaines informations
-qui vont être affichés aux utilisateurs lorsqu'il s'appreterons à utiliser votre application.
+Pour que vous puissiez utiliser votre clé, Google vous demandera des informations
+qui vont être affichées aux utilisateurs lorsqu'ils s'appreterons à utiliser votre application.
 
 Remplissez ces champs, pour pouvoir utiliser le token OAuth. 
 
@@ -106,9 +106,9 @@ La clé correspond au champ **ID client** dans le panneau identifiant de la Goog
 
 #### Attention
 
-Google par défaut vous propose un compte gratuit qui bloque à partir d'un certain nombre de requêtes par jours.
+Google par défaut vous propose un compte gratuit qui bloque à partir d'un certain nombre de requêtes par jour.
 
-Voyez a upgrader votre compte si vous voulez augmenter ce nombre.  
+Veillez a upgrader votre compte si vous voulez augmenter ce nombre.  
 
 
 #### Dans le code
@@ -118,10 +118,10 @@ Maintenant, il ne reste plus qu'à utiliser la clé dans le code, dans les param
 
 ```javascript
 
-// Notre token oauth crée précédemment 
+// Notre token oauth créé précédemment 
 var CLIENT_ID = 'xxxxxx';
 
-// Les informations utilisateur qu'on veut accéder par notre application.
+// Les informations utilisateur auquelles on veut accéder par notre application.
 var SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 var params_auth = {
@@ -151,14 +151,14 @@ récupérer les informations.
 
 ### Avant propos sur le POC
  
-La totalité est écrit en ECMAScript 6 (ES6 ou Ecmascript2015), correspondant à la dernière spécification du langage JavaScript.
+La totalité est écrite en ECMAScript 6 (ES6 ou Ecmascript2015), correspondant à la dernière spécification du langage JavaScript.
 
 Pour comprendre directement comment le code a été écrit, passez cette section et allez directement dans **Dive to the code**
  
 
 #### Ecmascript 6
  
-**Toutes les fonctionnalités qui sont utilisés ici fonctionnent très bien en version 5 du langage** et sont d'ailleurs transpilés en 
+**Toutes les fonctionnalités qui sont utilisées ici fonctionnent très bien en version 5 du langage** et sont d'ailleurs transpilées en 
 version 5 avec Babel, mais nous reviendrons là-dessus plus tard. 
 
 Utiliser ES6 permet d'avoir une meilleure visibilité dans le code, c'est plus propre, énormément de nouvelles fonctionnalités sont incluses
@@ -185,7 +185,7 @@ Babeljs, un projet démarré par Sebastian McKenzie, un jeune développeur de 17
 
 Babel nous permet ainsi d'utiliser quasi toutes les fonctionnalités d'ES6 directement dans une runtime ES5. 
 
-L'ensemble du code front chez facebook est basé sur ES6 et Babel, donc coté stabilité ça fonctionne plutôt bien! ;-) 
+L'ensemble du code front chez Facebook est basé sur ES6 et Babel, donc coté stabilité ça fonctionne plutôt bien! ;-) 
    
 #### React
 
@@ -193,17 +193,17 @@ L'ensemble du code front chez facebook est basé sur ES6 et Babel, donc coté st
 
 Pour construire l'interface utilisateur, j'ai utilisé React plutôt que de manipuler le DOM avec jQuery. 
 
-React est une lib développé par facebook en interne faite pour créer des interfaces utilisateurs à partir de composant 
+React est une lib développée par facebook en interne et faite pour créer des interfaces utilisateurs à partir de composants 
 (un peu comme les directives angular).
  
-React est spécialisé là-dedans et le fait très bien. Attention, ce n'est pas un framework mais une librairie. 
+React est spécialisée là-dedans et le fait très bien. Attention, ce n'est pas un framework mais une librairie. 
 
 Elle utilise quelques concepts plutôt sympa tels que, le virtual DOM ou l'immutabilité des états dans les composants permettant 
-de composer des interfaces utilisateurs beaucoup plus maintenable et simple au final.
+de composer des interfaces utilisateurs beaucoup plus maintenables et simples.
 
 Quelques web-app qui utilisent React : Facebook (certaines parties), Instagram (en totalité), Khan Academy, ... 
 
-La compréhension du code du POC ne sera pas impacté par React qui est très simple à lire et l'ensemble des fonctionnalités concernant l'api
+La compréhension du code du POC ne sera pas impactée par React qui est très simple à lire et l'ensemble des fonctionnalités concernant l'api
 google sont dans des fichiers séparés. 
 
 De plus j'ai essayé d'agrémenter le code de commentaire explicatif au maximum.
@@ -237,7 +237,7 @@ Avant toute choses, il est nécessaire d'importer le SDK JavaScript de Google po
 
 #### Archi des composants
 
-L'application contient plusieurs composant :
+L'application contient plusieurs composants :
 
 ```
 +- AppContainer -------------------------+
@@ -254,7 +254,7 @@ L'application contient plusieurs composant :
 
 - CalendarList : Affiche la liste des Calendar
 - Calendar : Une div affichant les informations sur un calendrier
-- EventList : Affiche la liste de composant Event
+- EventList : Affiche la liste de composants Event
 - EventForm : Un formulaire pour ajouter un évenement 
 - Event : Une div affichant un évenement d'un calendrier. 
 
@@ -270,7 +270,7 @@ npm run start
 
 Le point d'entrée de l'application est le fichier app.js
 
-J'attend que le dom soit entirement "ready" pour render mon composant principal qui contient les composants enfants. 
+J'attends que le dom soit entièrement "ready" pour render mon composant principal qui contient les composants enfants. 
 
 Je fais ça pour éviter que le composant soit affiché plus rapidement que la librairie google maps et donc provoquer des undefined
 à foison. 
@@ -334,7 +334,7 @@ Cette fonctionnalité est prise en charge par le composant app-container.
 
 En effet celui-ci garde dans son état interne le calendrier qui a été sélectionné ainsi que 
 
-ses évenements associés.
+ses événements associés.
 
 ```javascript
 
@@ -347,12 +347,12 @@ gapi.client.load('calendar', 'v3', function() {
     'calendarId': 'xxxxxx',
     'showDeleted': false,
     'singleEvents': true,
-    // J'affiche uniquement une 10aine d'évenements, parce que sinon on s'en sort plus.
+    // J'affiche uniquement une 10aine d'événements, parce que sinon on s'en sort plus.
     'maxResults': 10,
     'orderBy': 'startTime'
   });
   request.execute(function(resp) {
-    // La liste des évenements
+    // La liste des événements
     const events = resp.items;
   });
 });
@@ -361,10 +361,10 @@ gapi.client.load('calendar', 'v3', function() {
 
 
 
-#### Créer un évenement 
+#### Créer un événement 
 
 
-Cette fonctionnalité est associé au composantn app-container, dans la fonction **createEventInCalendar**
+Cette fonctionnalité est associée au composantn app-container, dans la fonction **createEventInCalendar**
 
 
 ```javascript
@@ -385,7 +385,7 @@ var request = gapi.client.calendar.events.insert({
 });
 
 request.execute(function(result) {
-    // Yay, mon event est crée ...
+    // Yay, mon event est créé ... 
 });
 ```
 
